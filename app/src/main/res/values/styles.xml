@@ -1,0 +1,24 @@
+<resources>
+   <style name="ArrowKey">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="TabButton">
+        <item name="android:background">@drawable/tab_button</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+    <style name="Tab">
+        <item name="android:background">#BFDFFF</item>
+    </style>
+
+</resources>

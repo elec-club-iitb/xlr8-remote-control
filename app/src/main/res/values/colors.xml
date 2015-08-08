@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="status_positive">#35AA78</color>
+    <color name="status_negative">#DD3544</color>
+    <color name="status_neutral">#000000</color>
+</resources>
