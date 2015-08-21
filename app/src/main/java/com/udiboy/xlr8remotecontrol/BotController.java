@@ -2,18 +2,28 @@ package com.udiboy.xlr8remotecontrol;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class BotController implements View.OnTouchListener{
+public class BotController implements View.OnTouchListener, SensorEventListener{
     BluetoothChatService mChatService;
     MainActivity mContext;
     public static final String TAG = " BotControl";
 
     private byte mMotorState = 0b00000000;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+
 
     //private byte mLastSent;
 
@@ -32,6 +42,9 @@ public class BotController implements View.OnTouchListener{
         mChatService=chatService;
 
         //testingTimer = new ScheduledThreadPoolExecutor(1);
+
+        mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     private void setBit(byte which, int bit){
@@ -100,6 +113,14 @@ public class BotController implements View.OnTouchListener{
         } else {
             mContext.setStatus("Communication error", R.color.status_negative);
         }*/
+    }
+
+    public void startSwagMode(){
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    public void stopSwagMode(){
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -181,5 +202,67 @@ public class BotController implements View.OnTouchListener{
 
         if(updated) sendMessage(mMotorState);
         return true;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        float x = event.values[SensorManager.DATA_X],
+              y = event.values[SensorManager.DATA_Y],
+              z = event.values[SensorManager.DATA_Z];
+
+        ((TextView)mContext.findViewById(R.id.swag_x)).setText("x: "+x);
+        ((TextView)mContext.findViewById(R.id.swag_y)).setText("y: "+y);
+        ((TextView)mContext.findViewById(R.id.swag_z)).setText("z: "+z);
+
+        int old = mMotorState;
+
+        if(x>6){
+            setBit(LT_MOTOR_FWD,1);
+            setBit(LT_MOTOR_BCK,0);
+            setBit(RT_MOTOR_FWD,0);
+            setBit(RT_MOTOR_BCK,1);
+        } else if(x<-6){
+            setBit(LT_MOTOR_FWD,0);
+            setBit(LT_MOTOR_BCK,1);
+            setBit(RT_MOTOR_FWD,1);
+            setBit(RT_MOTOR_BCK,0);
+        } else {
+            if(x>4){
+                setBit(LT_MOTOR_FWD,1);
+                setBit(LT_MOTOR_BCK,0);
+                setBit(RT_MOTOR_FWD,0);
+                setBit(RT_MOTOR_BCK,0);
+            } else if(x<-4){
+                setBit(LT_MOTOR_FWD,0);
+                setBit(LT_MOTOR_BCK,0);
+                setBit(RT_MOTOR_FWD,1);
+                setBit(RT_MOTOR_BCK,0);
+            } else {
+                if(y>4){
+                    setBit(LT_MOTOR_FWD,1);
+                    setBit(LT_MOTOR_BCK,0);
+                    setBit(RT_MOTOR_FWD,1);
+                    setBit(RT_MOTOR_BCK,0);
+                } else if(y<-4){
+                    setBit(LT_MOTOR_FWD,0);
+                    setBit(LT_MOTOR_BCK,1);
+                    setBit(RT_MOTOR_FWD,0);
+                    setBit(RT_MOTOR_BCK,1);
+                } else {
+                    reset();
+                }
+            }
+        }
+
+        ((TextView)mContext.findViewById(R.id.swag_bits)).setText("bits: "+Integer.toBinaryString(mMotorState));
+        if(old!=mMotorState)
+            if(mChatService.getState() == BluetoothChatService.STATE_CONNECTED)
+                sendMessage(mMotorState);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
