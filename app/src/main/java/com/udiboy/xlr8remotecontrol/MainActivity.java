@@ -52,6 +52,7 @@ public class  MainActivity extends Activity{
 
                             findViewById(R.id.tabButton2).setEnabled(true);
                             findViewById(R.id.tabButton3).setEnabled(true);
+                            findViewById(R.id.tabButton4).setEnabled(true);
 
                             tabSwitch(findViewById(R.id.tabButton2));
                             break;
@@ -69,6 +70,7 @@ public class  MainActivity extends Activity{
 
                             findViewById(R.id.tabButton2).setEnabled(false);
                             findViewById(R.id.tabButton3).setEnabled(false);
+                            //findViewById(R.id.tabButton4).setEnabled(false);
 
                             tabSwitch(findViewById(R.id.tabButton1));
                             break;
@@ -205,10 +207,14 @@ public class  MainActivity extends Activity{
         ((ToggleButton)findViewById(R.id.tabButton1)).setChecked(false);
         ((ToggleButton)findViewById(R.id.tabButton2)).setChecked(false);
         ((ToggleButton)findViewById(R.id.tabButton3)).setChecked(false);
+        ((ToggleButton)findViewById(R.id.tabButton4)).setChecked(false);
 
         findViewById(R.id.tab1).setVisibility(View.GONE);
         findViewById(R.id.tab2).setVisibility(View.GONE);
         findViewById(R.id.tab3).setVisibility(View.GONE);
+        findViewById(R.id.tab4).setVisibility(View.GONE);
+
+        mBotController.stopSwagMode();
 
         switch (v.getId()){
             case R.id.tabButton1:
@@ -219,6 +225,10 @@ public class  MainActivity extends Activity{
                 break;
             case R.id.tabButton3:
                 findViewById(R.id.tab3).setVisibility(View.VISIBLE);
+                break;
+            case R.id.tabButton4:
+                findViewById(R.id.tab4).setVisibility(View.VISIBLE);
+                mBotController.startSwagMode();
                 break;
         }
 

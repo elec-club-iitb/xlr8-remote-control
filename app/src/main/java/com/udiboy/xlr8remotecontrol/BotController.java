@@ -1,9 +1,16 @@
 package com.udiboy.xlr8remotecontrol;
 
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * class BotController
@@ -15,12 +22,15 @@ import android.view.View;
  * for each corresponding button, and handles the process of
  * initiating a "send" operation whenever needed
  */
-public class BotController implements View.OnTouchListener{
+public class BotController implements View.OnTouchListener, SensorEventListener{
     BluetoothChatService mChatService;
     MainActivity mContext;
     public static final String TAG = " BotControl";
 
     private byte mMotorState = 0b00000000; // Store the last bit sequence sent|to be sent
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
 
     // PIN mappings of motor control bits to ATtiny PORTB pins
     private static final byte LT_MOTOR_FWD=1;
@@ -31,6 +41,9 @@ public class BotController implements View.OnTouchListener{
     public BotController(MainActivity context, BluetoothChatService chatService){
         mContext=context;
         mChatService=chatService;
+
+        mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     // Set the bit specified by "which" using the PIN mappping to "bit"(0|1)
@@ -59,6 +72,15 @@ public class BotController implements View.OnTouchListener{
 
         byte msg[] = {(byte)b};
         mChatService.write(msg);
+    }
+
+
+    public void startSwagMode(){
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    public void stopSwagMode(){
+        mSensorManager.unregisterListener(this);
     }
 
     // Handle touch events on every button
@@ -149,5 +171,67 @@ public class BotController implements View.OnTouchListener{
         // We don want to unnecessarily send data
         if(updated) sendMessage(mMotorState);
         return true;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        float x = event.values[SensorManager.DATA_X],
+              y = event.values[SensorManager.DATA_Y],
+              z = event.values[SensorManager.DATA_Z];
+
+        ((TextView)mContext.findViewById(R.id.swag_x)).setText("x: "+x);
+        ((TextView)mContext.findViewById(R.id.swag_y)).setText("y: "+y);
+        ((TextView)mContext.findViewById(R.id.swag_z)).setText("z: "+z);
+
+        int old = mMotorState;
+
+        if(x>6){
+            setBit(LT_MOTOR_FWD,1);
+            setBit(LT_MOTOR_BCK,0);
+            setBit(RT_MOTOR_FWD,0);
+            setBit(RT_MOTOR_BCK,1);
+        } else if(x<-6){
+            setBit(LT_MOTOR_FWD,0);
+            setBit(LT_MOTOR_BCK,1);
+            setBit(RT_MOTOR_FWD,1);
+            setBit(RT_MOTOR_BCK,0);
+        } else {
+            if(x>4){
+                setBit(LT_MOTOR_FWD,1);
+                setBit(LT_MOTOR_BCK,0);
+                setBit(RT_MOTOR_FWD,0);
+                setBit(RT_MOTOR_BCK,0);
+            } else if(x<-4){
+                setBit(LT_MOTOR_FWD,0);
+                setBit(LT_MOTOR_BCK,0);
+                setBit(RT_MOTOR_FWD,1);
+                setBit(RT_MOTOR_BCK,0);
+            } else {
+                if(y>4){
+                    setBit(LT_MOTOR_FWD,1);
+                    setBit(LT_MOTOR_BCK,0);
+                    setBit(RT_MOTOR_FWD,1);
+                    setBit(RT_MOTOR_BCK,0);
+                } else if(y<-4){
+                    setBit(LT_MOTOR_FWD,0);
+                    setBit(LT_MOTOR_BCK,1);
+                    setBit(RT_MOTOR_FWD,0);
+                    setBit(RT_MOTOR_BCK,1);
+                } else {
+                    reset();
+                }
+            }
+        }
+
+        ((TextView)mContext.findViewById(R.id.swag_bits)).setText("bits: "+Integer.toBinaryString(mMotorState));
+        if(old!=mMotorState)
+            if(mChatService.getState() == BluetoothChatService.STATE_CONNECTED)
+                sendMessage(mMotorState);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
