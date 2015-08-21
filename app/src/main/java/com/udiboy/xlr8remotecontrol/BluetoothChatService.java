@@ -36,6 +36,8 @@ import java.util.UUID;
  * connections with other devices. It has a thread that listens for
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
+ *
+ * Picked up from android the BluetoothChat sample app
  */
 public class BluetoothChatService {
     // Debugging
@@ -45,6 +47,7 @@ public class BluetoothChatService {
     private static final String NAME_SECURE = "XLR8RemoteSecure";
 
     // Unique UUID for this application
+    // NOTE : This is the default UUID for HC-05/06. No other UUID will work
     private static final UUID MY_UUID_SECURE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final UUID MY_UUID_INSECURE =

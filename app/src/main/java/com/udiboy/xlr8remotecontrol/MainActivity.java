@@ -32,6 +32,11 @@ public class  MainActivity extends Activity{
 
     private BotController mBotController;
 
+    /**
+     * A Handler object which handles messages from the BluetoothChatService class
+     *
+     * It updates the UI based on various events
+     */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -39,6 +44,8 @@ public class  MainActivity extends Activity{
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
+                            //Disable the "Connect" tab, and enable other tabs
+
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName), R.color.status_positive);
 
                             findViewById(R.id.tabButton1).setEnabled(false);
@@ -53,6 +60,8 @@ public class  MainActivity extends Activity{
                             break;
                         case BluetoothChatService.STATE_LISTEN:
                         case BluetoothChatService.STATE_NONE:
+                            // Disable other tabs and go back to "Connect" tab
+
                             setStatus(getString(R.string.title_not_connected),R.color.status_negative);
 
 
@@ -191,6 +200,7 @@ public class  MainActivity extends Activity{
         }
     }
 
+    // Helper for switching tabs in the Tab based UI
     public void tabSwitch(View  v){
         ((ToggleButton)findViewById(R.id.tabButton1)).setChecked(false);
         ((ToggleButton)findViewById(R.id.tabButton2)).setChecked(false);
@@ -255,85 +265,4 @@ public class  MainActivity extends Activity{
         ((TextView)findViewById(R.id.status)).setText(status);
         ((TextView)findViewById(R.id.status)).setTextColor(getResources().getColor(color));
     }
-
-    /*@Override
-    public boolean onTouch(View v, MotionEvent event) {
-        boolean updated = true;
-        switch(event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                Log.d(TAG, "Action Down");
-                v.setPressed(true);
-                switch (v.getId()) {
-                    case R.id.forward:
-                        setBit(LT_MOTOR_FWD,1);
-                        setBit(LT_MOTOR_BCK,0);
-                        setBit(RT_MOTOR_FWD,1);
-                        setBit(RT_MOTOR_BCK,0);
-                        break;
-                    case R.id.backward:
-                        setBit(LT_MOTOR_FWD,0);
-                        setBit(LT_MOTOR_BCK,1);
-                        setBit(RT_MOTOR_FWD,0);
-                        setBit(RT_MOTOR_BCK,1);
-                        break;
-                    case R.id.left:
-                        setBit(LT_MOTOR_FWD,1);
-                        setBit(LT_MOTOR_BCK,0);
-                        setBit(RT_MOTOR_FWD,0);
-                        setBit(RT_MOTOR_BCK,1);
-                        break;
-                    case R.id.right:
-                        setBit(LT_MOTOR_FWD,0);
-                        setBit(LT_MOTOR_BCK,1);
-                        setBit(RT_MOTOR_FWD,1);
-                        setBit(RT_MOTOR_BCK,0);
-                        break;
-                    case R.id.left_fwd:
-                        setBit(LT_MOTOR_FWD,1);
-                        break;
-                    case R.id.left_bck:
-                        setBit(LT_MOTOR_BCK,1);
-                        break;
-                    case R.id.right_fwd:
-                        setBit(RT_MOTOR_FWD,1);
-                        break;
-                    case R.id.right_bck:
-                        setBit(RT_MOTOR_BCK,1);
-                        break;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_OUTSIDE:
-                Log.d(TAG, "Action Up");
-                v.setPressed(false);
-                switch (v.getId()) {
-                    case R.id.forward:
-                    case R.id.backward:
-                    case R.id.left:
-                    case R.id.right:
-                        reset();
-                        break;
-                    case R.id.left_fwd:
-                        setBit(LT_MOTOR_FWD,0);
-                        break;
-                    case R.id.left_bck:
-                        setBit(LT_MOTOR_BCK,0);
-                        break;
-                    case R.id.right_fwd:
-                        setBit(RT_MOTOR_FWD,0);
-                        break;
-                    case R.id.right_bck:
-                        setBit(RT_MOTOR_BCK,0);
-                        break;
-                }
-                break;
-            default:
-                updated=false;
-                break;
-        }
-
-        if(updated) sendMessage(mMotorState);
-        return true;
-    }*/
 }
