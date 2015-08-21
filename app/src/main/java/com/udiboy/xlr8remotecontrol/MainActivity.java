@@ -42,8 +42,6 @@ public class  MainActivity extends Activity{
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName), R.color.status_positive);
 
                             findViewById(R.id.tabButton1).setEnabled(false);
-                            //((Button)findViewById(R.id.button_connect)).setText("Disconnect");
-                            //findViewById(R.id.button_test).setEnabled(true);
 
                             findViewById(R.id.tabButton2).setEnabled(true);
                             findViewById(R.id.tabButton3).setEnabled(true);
@@ -60,9 +58,6 @@ public class  MainActivity extends Activity{
 
                             findViewById(R.id.tabButton1).setEnabled(true);
 
-                            //((Button)findViewById(R.id.button_connect)).setText("Connect to bot");
-                            //findViewById(R.id.button_test).setEnabled(false);
-
                             findViewById(R.id.tabButton2).setEnabled(false);
                             findViewById(R.id.tabButton3).setEnabled(false);
 
@@ -74,15 +69,11 @@ public class  MainActivity extends Activity{
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     Log.i("BluetoothIO","Sent : "+(int)writeBuf[0]);
-
-                    mBotController.sent(writeBuf[0]);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     Log.i("BluetoothIO","Rcvd : "+(int)readBuf[0]);
-
-                    mBotController.received(readBuf[0]);
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -199,10 +190,6 @@ public class  MainActivity extends Activity{
             //mChatService.disconnect();
         }
     }
-
-    /*public void test(View v) {
-        mBotController.test();
-    }*/
 
     public void tabSwitch(View  v){
         ((ToggleButton)findViewById(R.id.tabButton1)).setChecked(false);

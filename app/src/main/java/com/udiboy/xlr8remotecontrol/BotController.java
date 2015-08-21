@@ -15,13 +15,6 @@ public class BotController implements View.OnTouchListener{
 
     private byte mMotorState = 0b00000000;
 
-    //private byte mLastSent;
-
-    //private ProgressDialog mTestingDialog;
-    //private boolean testSucceeded = false;
-
-    //private ScheduledThreadPoolExecutor testingTimer;
-
     private static final byte LT_MOTOR_FWD=1;
     private static final byte LT_MOTOR_BCK=3;
     private static final byte RT_MOTOR_FWD=0;
@@ -30,8 +23,6 @@ public class BotController implements View.OnTouchListener{
     public BotController(MainActivity context, BluetoothChatService chatService){
         mContext=context;
         mChatService=chatService;
-
-        //testingTimer = new ScheduledThreadPoolExecutor(1);
     }
 
     private void setBit(byte which, int bit){
@@ -55,51 +46,6 @@ public class BotController implements View.OnTouchListener{
 
         byte msg[] = {(byte)b};
         mChatService.write(msg);
-    }
-
-    /*public void test(){
-        int randomByte = (int) (Math.random()*128);
-        sendMessage((byte) randomByte);
-        mTestingDialog = ProgressDialog.show(mContext,null,"Testing",false,true);
-
-        testingTimer.schedule(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG,"scheduled run");
-
-                if(!testSucceeded){
-                    Log.d(TAG,"test failed");
-                    mContext.setStatus("Communication error", R.color.status_negative);
-                }
-
-                //if(mTestingDialog!=null) {
-                    Log.d(TAG,"Trying to dismiss");
-                    mTestingDialog.dismiss();
-                    mTestingDialog = null;
-                //}
-            }
-        }, 5, TimeUnit.SECONDS);
-    }*/
-
-    public void sent(byte b){
-        //mLastSent = b;
-        //testSucceeded=false;
-    }
-
-    public void received(byte b){
-        /*if(b==mLastSent){
-            testSucceeded=true;
-
-            if(mTestingDialog!=null) {
-                Log.d(TAG,"Trying to dismiss 1");
-                mTestingDialog.dismiss();
-                mTestingDialog = null;
-            }
-
-            mContext.setStatus("Communication working", R.color.status_positive);
-        } else {
-            mContext.setStatus("Communication error", R.color.status_negative);
-        }*/
     }
 
     @Override

@@ -154,15 +154,19 @@
                     android:layout_centerInParent="true"
                     android:id="@+id/button_connect" />
 
-                <!--<Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Test"
-                    android:id="@+id/button_test"
-                    android:layout_below="@+id/button_connect"
-                    android:layout_centerHorizontal="true"
-                    android:onClick="test"
-                    android:enabled="false" />-->
+                <ImageButton
+                    style="@style/ArrowKey"
+                    android:id="@+id/left_soft"
+                    android:src="@drawable/left_button"
+                    android:layout_alignTop="@+id/filler"
+                    android:layout_toLeftOf="@+id/filler"/>
+
+                <ImageButton
+                    style="@style/ArrowKey"
+                    android:id="@+id/right_soft"
+                    android:src="@drawable/right_button"
+                    android:layout_alignTop="@+id/filler"
+                    android:layout_toRightOf="@+id/filler"/>
             </RelativeLayout>
         </FrameLayout>
 
