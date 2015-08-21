@@ -173,6 +173,19 @@ public class BotController implements View.OnTouchListener, SensorEventListener{
         return true;
     }
 
+
+    /**
+     * SWAG mode :D :P
+     *
+     * Control the bot using tilt gestures of the phone.
+     * Basically motion control
+     *
+     * It simply checks range of x and y values to see
+     * how much the phone is tilted in what direction
+     *
+     * That is mapped to a corresponding bit sequence
+     * If the tilt is less than certain values, bit sequence is reset
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
 

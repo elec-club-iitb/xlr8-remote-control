@@ -70,7 +70,7 @@ public class  MainActivity extends Activity{
 
                             findViewById(R.id.tabButton2).setEnabled(false);
                             findViewById(R.id.tabButton3).setEnabled(false);
-                            //findViewById(R.id.tabButton4).setEnabled(false);
+                            findViewById(R.id.tabButton4).setEnabled(false);
 
                             tabSwitch(findViewById(R.id.tabButton1));
                             break;

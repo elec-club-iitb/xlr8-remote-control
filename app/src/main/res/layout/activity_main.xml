@@ -257,7 +257,7 @@
             android:textOff="Swag"
             android:onClick="tabSwitch"
             android:id="@+id/tabButton4"
-            android:enabled="true"
+            android:enabled="false"
             android:checked="false" />
     </LinearLayout>
 
