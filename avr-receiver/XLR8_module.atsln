@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XLR8_module", "XLR8_module\XLR8_module.cproj", "{A21EAC1F-A114-4F97-B9F9-5EADC54ACB5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A21EAC1F-A114-4F97-B9F9-5EADC54ACB5A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{A21EAC1F-A114-4F97-B9F9-5EADC54ACB5A}.Debug|AVR.Build.0 = Debug|AVR
+		{A21EAC1F-A114-4F97-B9F9-5EADC54ACB5A}.Release|AVR.ActiveCfg = Release|AVR
+		{A21EAC1F-A114-4F97-B9F9-5EADC54ACB5A}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

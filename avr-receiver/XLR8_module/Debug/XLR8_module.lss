@@ -1,0 +1,138 @@
+
+XLR8_module.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000078  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00000078  000000ec  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000000ec  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000028  00000000  00000000  0000011c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000010e  00000000  00000000  00000144  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000000cb  00000000  00000000  00000252  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000000e1  00000000  00000000  0000031d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000034  00000000  00000000  00000400  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000015c  00000000  00000000  00000434  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000026  00000000  00000000  00000590  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000018  00000000  00000000  000005b6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+  26:	07 c0       	rjmp	.+14     	; 0x36 <__bad_interrupt>
+  28:	06 c0       	rjmp	.+12     	; 0x36 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf ed       	ldi	r28, 0xDF	; 223
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	13 d0       	rcall	.+38     	; 0x5a <main>
+  34:	1f c0       	rjmp	.+62     	; 0x74 <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <USARTInit>:
+#include <avr/io.h>				// definations for registers
+//default frequency of operation 1M
+void USARTInit(unsigned int ubrr_value, uint8_t x2, uint8_t stopbits) {
+	//from datasheet : 
+	// Set baud rate
+	UBRRL = ubrr_value & 255;
+  38:	89 b9       	out	0x09, r24	; 9
+	UBRRH = ubrr_value >> 8;
+  3a:	92 b9       	out	0x02, r25	; 2
+	// Frame Format: asynchronous, 8 data bits, no parity, 1/2 stop bits
+	UCSRC = _BV(UCSZ1) | _BV(UCSZ0);
+  3c:	86 e0       	ldi	r24, 0x06	; 6
+  3e:	83 b9       	out	0x03, r24	; 3
+	if(stopbits == 2) UCSRC |= _BV(USBS);
+  40:	42 30       	cpi	r20, 0x02	; 2
+  42:	09 f4       	brne	.+2      	; 0x46 <__SREG__+0x7>
+  44:	1b 9a       	sbi	0x03, 3	; 3
+	if(x2) UCSRA = _BV(U2X); // 2x
+  46:	66 23       	and	r22, r22
+  48:	11 f0       	breq	.+4      	; 0x4e <__SREG__+0xf>
+  4a:	82 e0       	ldi	r24, 0x02	; 2
+  4c:	8b b9       	out	0x0b, r24	; 11
+
+	// USART Data Register Empty Interrupt Enable
+	UCSRB = _BV(UDRIE);
+  4e:	80 e2       	ldi	r24, 0x20	; 32
+  50:	8a b9       	out	0x0a, r24	; 10
+
+	// Enable The receiver and transmitter
+	UCSRB |= _BV(RXEN) | _BV(TXEN);
+  52:	8a b1       	in	r24, 0x0a	; 10
+  54:	88 61       	ori	r24, 0x18	; 24
+  56:	8a b9       	out	0x0a, r24	; 10
+  58:	08 95       	ret
+
+0000005a <main>:
+}
+
+int main() {
+	
+	USARTInit(5, 0, 1); // initialise uart to baud rate 9600, no parity , 1 stopbit
+  5a:	41 e0       	ldi	r20, 0x01	; 1
+  5c:	60 e0       	ldi	r22, 0x00	; 0
+  5e:	85 e0       	ldi	r24, 0x05	; 5
+  60:	90 e0       	ldi	r25, 0x00	; 0
+  62:	ea df       	rcall	.-44     	; 0x38 <USARTInit>
+	DDRB=0xFF;			// make all pins on port B as output
+  64:	8f ef       	ldi	r24, 0xFF	; 255
+  66:	87 bb       	out	0x17, r24	; 23
+	PORTB  = 0x00;		// initially make all pins low
+  68:	18 ba       	out	0x18, r1	; 24
+	
+	while(1){		//endless loop
+		while( !(UCSRA & (1<<RXC))) ;	// wait for data to be received in uart UDR register
+  6a:	5f 9b       	sbis	0x0b, 7	; 11
+  6c:	fe cf       	rjmp	.-4      	; 0x6a <main+0x10>
+		char temp = UDR;
+  6e:	8c b1       	in	r24, 0x0c	; 12
+		PORTB = temp;		//directly write value of uart data to port
+  70:	88 bb       	out	0x18, r24	; 24
+			PORTB = 0xF0|(temp&0x0F);
+		}
+		else {
+			PORTB = temp&0X0F;
+		}*/
+	}
+  72:	fb cf       	rjmp	.-10     	; 0x6a <main+0x10>
+
+00000074 <_exit>:
+  74:	f8 94       	cli
+
+00000076 <__stop_program>:
+  76:	ff cf       	rjmp	.-2      	; 0x76 <__stop_program>
