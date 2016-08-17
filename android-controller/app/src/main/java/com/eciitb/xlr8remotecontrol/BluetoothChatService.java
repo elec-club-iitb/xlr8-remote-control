@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.udiboy.xlr8remotecontrol;
+package com.eciitb.xlr8remotecontrol;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

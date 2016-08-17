@@ -1,4 +1,4 @@
-package com.udiboy.xlr8remotecontrol;
+package com.eciitb.xlr8remotecontrol;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.udiboy.xlr8remotecontrol" >
+    package="com.eciitb.xlr8remotecontrol" >
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.eciitb.xlr8remotecontrol.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DeviceListActivity"
+        <activity android:name="com.eciitb.xlr8remotecontrol.DeviceListActivity"
             android:label="Connect to Device"
             android:theme="@android:style/Theme.Dialog">
 

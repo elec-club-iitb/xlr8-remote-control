@@ -153,20 +153,6 @@
                     android:onClick="connectToBot"
                     android:layout_centerInParent="true"
                     android:id="@+id/button_connect" />
-
-                <ImageButton
-                    style="@style/ArrowKey"
-                    android:id="@+id/left_soft"
-                    android:src="@drawable/left_button"
-                    android:layout_alignTop="@+id/filler"
-                    android:layout_toLeftOf="@+id/filler"/>
-
-                <ImageButton
-                    style="@style/ArrowKey"
-                    android:id="@+id/right_soft"
-                    android:src="@drawable/right_button"
-                    android:layout_alignTop="@+id/filler"
-                    android:layout_toRightOf="@+id/filler"/>
             </RelativeLayout>
 
 

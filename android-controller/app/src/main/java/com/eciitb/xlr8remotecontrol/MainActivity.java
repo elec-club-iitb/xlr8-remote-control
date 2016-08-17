@@ -1,7 +1,6 @@
-package com.udiboy.xlr8remotecontrol;
+package com.eciitb.xlr8remotecontrol;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -228,6 +226,7 @@ public class  MainActivity extends Activity{
                 break;
             case R.id.tabButton4:
                 findViewById(R.id.tab4).setVisibility(View.VISIBLE);
+                Toast.makeText(this, "USE WITH CAUTION! YOUR BOT MAY CRASH!", Toast.LENGTH_LONG).show();
                 mBotController.startSwagMode();
                 break;
         }

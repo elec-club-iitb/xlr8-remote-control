@@ -1,7 +1,6 @@
-package com.udiboy.xlr8remotecontrol;
+package com.eciitb.xlr8remotecontrol;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
