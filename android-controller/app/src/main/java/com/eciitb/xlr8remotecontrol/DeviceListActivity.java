@@ -117,9 +117,9 @@ public class DeviceListActivity extends Activity {
         if (pairedDevices.size() > 0) {
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                if((device.getName() != null && (device.getName().equalsIgnoreCase("HC-05") || device.getName().equalsIgnoreCase("HC-06"))) ||
-                        device.getAddress().substring(0,2).equalsIgnoreCase("98"))
+                if(isHC05(device.getName(), device.getAddress())) {
                     pairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                }
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
@@ -176,6 +176,8 @@ public class DeviceListActivity extends Activity {
             String address = info.substring(info.length() - 17);
 
             // Create the result Intent and include the MAC address
+            Log.d("DeviceListActivity", "Device address: "+address);
+
             Intent intent = new Intent();
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
@@ -200,9 +202,9 @@ public class DeviceListActivity extends Activity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // If it's already paired, skip it, because it's been listed already
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    if((device.getName() != null && (device.getName().equalsIgnoreCase("HC-05") || device.getName().equalsIgnoreCase("HC-06"))) ||
-                       device.getAddress().substring(0,2).equalsIgnoreCase("98"))
+                    if(isHC05(device.getName(), device.getAddress())){
                         mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                    }
                 }
                 // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
@@ -215,5 +217,11 @@ public class DeviceListActivity extends Activity {
             }
         }
     };
+
+    boolean isHC05(String name, String address){
+        Log.d("isHC05", name+", "+address);
+        return (name != null && (name.equalsIgnoreCase("HC-05") || name.equalsIgnoreCase("HC-06"))) ||
+                    address.startsWith("98") || address.startsWith("00");
+    }
 
 }
