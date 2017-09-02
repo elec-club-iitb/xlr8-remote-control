@@ -18,7 +18,7 @@ echo $test
 if [$1 -eq $NULL]; then
 	echo " "
 	echo "Usage: ./run.sh codename.c"
-else	
+else
 	avr-gcc -g -Os -mmcu=attiny2313 -c $test.c
 	avr-gcc -g -mmcu=attiny2313 -o $test.elf $test.o
 	avr-objcopy -j .text -j .data -O ihex $test.elf $test.hex
@@ -26,5 +26,5 @@ else
 	echo ""
 	echo "Compilation Successful, Now Burning"
 
-	avrdude -p attiny2313 -c usbasp -P usb -e -U flash:w:$test.hex
+	avrdude -p attiny2313 -c usbasp -P usb -e -U flash:w:$test.hex -U lfuse:w:0xe4:m
 fi

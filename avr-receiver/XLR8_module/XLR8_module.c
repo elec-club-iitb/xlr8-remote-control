@@ -5,6 +5,7 @@
  *  Author: Ajinkya & Meet
  */ 
 
+#define F_CPU 8000000
 #include <avr/io.h>				// definations for registers
 //default frequency of operation 1M
 void USARTInit(unsigned int ubrr_value, uint8_t x2, uint8_t stopbits) {
@@ -26,7 +27,7 @@ void USARTInit(unsigned int ubrr_value, uint8_t x2, uint8_t stopbits) {
 
 int main() {
 	
-	USARTInit(5, 0, 1); // initialise uart to baud rate 9600, no parity , 1 stopbit
+	USARTInit(12, 0, 1); // initialise uart to baud rate 9600, no parity , 1 stopbit
 	DDRB=0xFF;			// make all pins on port B as output
 	PORTB  = 0x00;		// initially make all pins low
 	
